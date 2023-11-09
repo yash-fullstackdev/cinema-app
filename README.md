@@ -30,7 +30,24 @@
 
 ```bash
 $ npm install
+
+$ npm run migrate => run db migration
+$ npm run generate => generate type for db
+$ npm run studio => GUI for viewing database
 ```
+
+## Swagger URL 
+
+```bash
+$ http://localhost:4000/apis/docs/
+$ http://localhost:4000/apis/docs/#/
+
+$ SWAGGER CREDS:
+$ username: cinema
+$ password: cinema@123
+
+```
+
 
 ## Running the app
 
@@ -39,7 +56,7 @@ $ npm install
 $ npm run start
 
 # watch mode
-$ npm run start:dev
+$ npm run dev
 
 # production mode
 $ npm run start:prod
