@@ -1,0 +1,31 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model cinema {
+  id         String   @id @default(uuid())
+  name       String
+  totalSeats Int
+  seat       seat[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model seat {
+  id            String   @id @default(uuid())
+  cinema        cinema?  @relation(fields: [cinemaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  cinemaId      String?
+  seatNumber    Int
+  bookingStatus Boolean
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
