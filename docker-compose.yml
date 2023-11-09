@@ -1,0 +1,38 @@
+# docker-compose.yml
+
+version: "3.8"
+services:
+  app:
+    ports:
+      - "4000:4000"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: postgres://postgres:secretpassword@some-postgres:5432/cinema
+    networks:
+      - cinema_postgres-network
+    links:
+      - some-postgres
+
+  some-postgres:
+    container_name: some-postgres
+    image: postgres:13.5
+    restart: always
+    environment:
+      POSTGRES_HOST: localhost
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secretpassword
+      POSTGRES_DB: cinema
+    ports:
+      - "5431:5432"
+    networks:
+      - cinema_postgres-network
+
+networks:
+  default:
+  cinema_postgres-network:
+    external: true
+
+volumes:
+  some-postgres:

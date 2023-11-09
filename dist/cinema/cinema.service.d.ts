@@ -1,9 +1,19 @@
-import { CreateCinemaDto } from './dto/create-cinema.dto';
-import { UpdateCinemaDto } from './dto/update-cinema.dto';
+import { CreateCinemaDto } from "./dto/create-cinema.dto";
+import { PrismaService } from "@shared/prisma/prisma.service";
 export declare class CinemaService {
-    create(createCinemaDto: CreateCinemaDto): string;
-    findAll(): string;
-    findOne(id: number): string;
-    update(id: number, updateCinemaDto: UpdateCinemaDto): string;
-    remove(id: number): string;
+    private prisma;
+    constructor(prisma: PrismaService);
+    create(createCinemaDto: CreateCinemaDto): Promise<string>;
+    purchaseSeat(cinemaId: any, seatNumber: number): Promise<{
+        id: string;
+        cinemaId: string;
+        seatNumber: number;
+        bookingStatus: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
+    getConsecutiveSeats(cinemaId: any): Promise<{
+        first_seat: number;
+        second_seat: number;
+    } | "There is no consecutive seats for the cinema">;
 }

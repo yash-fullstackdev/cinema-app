@@ -16,64 +16,56 @@ exports.CinemaController = void 0;
 const common_1 = require("@nestjs/common");
 const cinema_service_1 = require("./cinema.service");
 const create_cinema_dto_1 = require("./dto/create-cinema.dto");
-const update_cinema_dto_1 = require("./dto/update-cinema.dto");
+const swagger_1 = require("@nestjs/swagger");
+const cinema_entity_1 = require("./entities/cinema.entity");
+const update_seat_entity_1 = require("./entities/update-seat.entity");
+const update_seat_dto_1 = require("./dto/update-seat.dto");
+const get_consecutive_seats_entity_1 = require("./entities/get-consecutive-seats.entity");
 let CinemaController = class CinemaController {
     constructor(cinemaService) {
         this.cinemaService = cinemaService;
     }
-    create(createCinemaDto) {
-        return this.cinemaService.create(createCinemaDto);
+    async create(createCinemaDto) {
+        return await this.cinemaService.create(createCinemaDto);
     }
-    findAll() {
-        return this.cinemaService.findAll();
+    async purchaseSeat({ seatNumber }, { id: cinemaId }) {
+        return await this.cinemaService.purchaseSeat(cinemaId, seatNumber);
     }
-    findOne(id) {
-        return this.cinemaService.findOne(+id);
-    }
-    update(id, updateCinemaDto) {
-        return this.cinemaService.update(+id, updateCinemaDto);
-    }
-    remove(id) {
-        return this.cinemaService.remove(+id);
+    async getConsecutiveSeats({ id: cinemaId }) {
+        return await this.cinemaService.getConsecutiveSeats(cinemaId);
     }
 };
 __decorate([
     (0, common_1.Post)(),
+    (0, swagger_1.ApiCreatedResponse)({ type: cinema_entity_1.CinemaEntity }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_cinema_dto_1.CreateCinemaDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], CinemaController.prototype, "create", null);
 __decorate([
-    (0, common_1.Get)(),
+    (0, common_1.Post)(":id/purchase-seat"),
+    (0, swagger_1.ApiOkResponse)({ type: update_seat_entity_1.UpdateSeatEntity }),
+    (0, swagger_1.ApiParam)({ type: String, name: "id" }),
+    (0, swagger_1.ApiBody)({ type: update_seat_dto_1.UpdateSeatDto }),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Param)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], CinemaController.prototype, "findAll", null);
+    __metadata("design:paramtypes", [update_seat_dto_1.UpdateSeatDto, Object]),
+    __metadata("design:returntype", Promise)
+], CinemaController.prototype, "purchaseSeat", null);
 __decorate([
-    (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Get)(":id/consecutive-seats"),
+    (0, swagger_1.ApiOkResponse)({ type: get_consecutive_seats_entity_1.GetConsecutiveSeatEntity }),
+    (0, swagger_1.ApiParam)({ type: String, name: "id" }),
+    __param(0, (0, common_1.Param)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], CinemaController.prototype, "findOne", null);
-__decorate([
-    (0, common_1.Patch)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_cinema_dto_1.UpdateCinemaDto]),
-    __metadata("design:returntype", void 0)
-], CinemaController.prototype, "update", null);
-__decorate([
-    (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], CinemaController.prototype, "remove", null);
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], CinemaController.prototype, "getConsecutiveSeats", null);
 CinemaController = __decorate([
-    (0, common_1.Controller)('cinema'),
+    (0, common_1.Controller)("cinema"),
+    (0, swagger_1.ApiTags)("cinema"),
     __metadata("design:paramtypes", [cinema_service_1.CinemaService])
 ], CinemaController);
 exports.CinemaController = CinemaController;
